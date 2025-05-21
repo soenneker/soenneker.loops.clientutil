@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Soenneker.Loops.Client.Registrars;
 using Soenneker.Loops.ClientUtil.Abstract;
-using Soenneker.Utils.HttpClientCache.Registrar;
 
 namespace Soenneker.Loops.ClientUtil.Registrars;
 
@@ -16,7 +15,7 @@ public static class LoopsClientUtilRegistrar
     /// </summary>
     public static IServiceCollection AddLoopsClientUtilAsSingleton(this IServiceCollection services)
     {
-        services.AddHttpClientCacheAsSingleton().AddLoopsHttpClientAsSingleton().TryAddSingleton<ILoopsClientUtil, LoopsClientUtil>();
+        services.AddLoopsHttpClientAsSingleton().TryAddSingleton<ILoopsClientUtil, LoopsClientUtil>();
 
         return services;
     }
@@ -26,7 +25,7 @@ public static class LoopsClientUtilRegistrar
     /// </summary>
     public static IServiceCollection AddLoopsClientUtilAsScoped(this IServiceCollection services)
     {
-        services.AddHttpClientCacheAsSingleton().AddLoopsHttpClientAsScoped().TryAddScoped<ILoopsClientUtil, LoopsClientUtil>();
+        services.AddLoopsHttpClientAsScoped().TryAddScoped<ILoopsClientUtil, LoopsClientUtil>();
 
         return services;
     }

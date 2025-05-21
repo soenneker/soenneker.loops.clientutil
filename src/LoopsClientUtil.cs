@@ -42,8 +42,8 @@ public sealed class LoopsClientUtil : ILoopsClientUtil
         _client.Dispose();
     }
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
-        await _client.DisposeAsync();
+        return _client.DisposeAsync();
     }
 }
