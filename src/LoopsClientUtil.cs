@@ -20,7 +20,7 @@ public sealed class LoopsClientUtil : ILoopsClientUtil
 
     public LoopsClientUtil(ILoopsHttpClient httpClientUtil, IConfiguration configuration)
     {
-        _client = new AsyncSingleton<LoopsOpenApiClient>(async (token, _) =>
+        _client = new AsyncSingleton<LoopsOpenApiClient>(async token =>
         {
             HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
 
