@@ -17,19 +17,25 @@ namespace Soenneker.Loops.ClientUtil;
 public sealed class LoopsClientUtil : ILoopsClientUtil
 {
     private readonly AsyncSingleton<LoopsOpenApiClient> _client;
+    private readonly ILoopsHttpClient _httpClientUtil;
+    private readonly IConfiguration _configuration;
 
     public LoopsClientUtil(ILoopsHttpClient httpClientUtil, IConfiguration configuration)
     {
-        _client = new AsyncSingleton<LoopsOpenApiClient>(async token =>
-        {
-            HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
+        _httpClientUtil = httpClientUtil;
+        _configuration = configuration;
+        _client = new AsyncSingleton<LoopsOpenApiClient>(CreateClient);
+    }
 
-            var apiKey = configuration.GetValueStrict<string>("Loops:ApiKey");
+    private async ValueTask<LoopsOpenApiClient> CreateClient(CancellationToken token)
+    {
+        HttpClient httpClient = await _httpClientUtil.Get(token).NoSync();
 
-            var requestAdapter = new HttpClientRequestAdapter(new BearerAuthenticationProvider(apiKey), httpClient: httpClient);
+        var apiKey = _configuration.GetValueStrict<string>("Loops:ApiKey");
 
-            return new LoopsOpenApiClient(requestAdapter);
-        });
+        var requestAdapter = new HttpClientRequestAdapter(new BearerAuthenticationProvider(apiKey), httpClient: httpClient);
+
+        return new LoopsOpenApiClient(requestAdapter);
     }
 
     public ValueTask<LoopsOpenApiClient> Get(CancellationToken cancellationToken = default)
