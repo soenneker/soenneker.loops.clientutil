@@ -42,7 +42,7 @@
 
     <ItemGroup>
         <PackageReference Include="Soenneker.Kiota.BearerAuthenticationProvider" Version="4.0.25" />
-        <PackageReference Include="Soenneker.Loops.Client" Version="4.0.178" />
+        <PackageReference Include="Soenneker.Loops.Client" Version="4.0.179" />
         <PackageReference Include="Soenneker.Loops.OpenApiClient" Version="4.0.74" />
         <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.748" />
     </ItemGroup>
