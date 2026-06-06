@@ -47,6 +47,6 @@
         <PackageReference Include="Soenneker.Kiota.BearerAuthenticationProvider" Version="4.0.41" />
         <PackageReference Include="Soenneker.Loops.Client" Version="4.0.296" />
         <PackageReference Include="Soenneker.Loops.OpenApiClient" Version="4.0.115" />
-        <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.792" />
+        <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.795" />
     </ItemGroup>
 </Project>
