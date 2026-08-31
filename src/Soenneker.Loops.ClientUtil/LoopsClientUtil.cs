@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Soenneker.Extensions.Configuration;
 using Soenneker.Extensions.ValueTask;
-using Soenneker.Kiota.BearerAuthenticationProvider;
 using Soenneker.Loops.Client.Abstract;
 using Soenneker.Loops.ClientUtil.Abstract;
 using Soenneker.Loops.OpenApiClient;
@@ -13,17 +13,14 @@ using System.Threading.Tasks;
 
 namespace Soenneker.Loops.ClientUtil;
 
-/// <inheritdoc cref="ILoopsClientUtil"/>
 public sealed class LoopsClientUtil : ILoopsClientUtil
 {
     private readonly AsyncSingleton<LoopsOpenApiClient> _client;
     private readonly ILoopsHttpClient _httpClientUtil;
-    private readonly IConfiguration _configuration;
 
-    public LoopsClientUtil(ILoopsHttpClient httpClientUtil, IConfiguration configuration)
+    public LoopsClientUtil(ILoopsHttpClient httpClientUtil)
     {
         _httpClientUtil = httpClientUtil;
-        _configuration = configuration;
         _client = new AsyncSingleton<LoopsOpenApiClient>(CreateClient);
     }
 
@@ -31,9 +28,7 @@ public sealed class LoopsClientUtil : ILoopsClientUtil
     {
         HttpClient httpClient = await _httpClientUtil.Get(token).NoSync();
 
-        var apiKey = _configuration.GetValueStrict<string>("Loops:ApiKey");
-
-        var requestAdapter = new HttpClientRequestAdapter(new BearerAuthenticationProvider(apiKey), httpClient: httpClient);
+        var requestAdapter = new HttpClientRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient);
 
         return new LoopsOpenApiClient(requestAdapter);
     }
@@ -43,18 +38,11 @@ public sealed class LoopsClientUtil : ILoopsClientUtil
         return _client.Get(cancellationToken);
     }
 
-    /// <summary>
-    /// Releases resources used by the current instance.
-    /// </summary>
     public void Dispose()
     {
         _client.Dispose();
     }
 
-    /// <summary>
-    /// Asynchronously releases resources used by the current instance.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
         return _client.DisposeAsync();

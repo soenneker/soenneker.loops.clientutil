@@ -6,7 +6,7 @@ using Soenneker.Loops.ClientUtil.Abstract;
 namespace Soenneker.Loops.ClientUtil.Registrars;
 
 /// <summary>
-/// An async thread-safe singleton for Loops OpenApiClient
+/// Registers the lazily created Loops generated-client provider.
 /// </summary>
 public static class LoopsClientUtilRegistrar
 {
@@ -25,7 +25,7 @@ public static class LoopsClientUtilRegistrar
     /// </summary>
     public static IServiceCollection AddLoopsClientUtilAsScoped(this IServiceCollection services)
     {
-        services.AddLoopsHttpClientAsScoped().TryAddScoped<ILoopsClientUtil, LoopsClientUtil>();
+        services.AddLoopsHttpClientAsSingleton().TryAddScoped<ILoopsClientUtil, LoopsClientUtil>();
 
         return services;
     }
