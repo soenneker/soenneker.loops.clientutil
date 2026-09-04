@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Soenneker.Loops.ClientUtil;
 
+/// <inheritdoc cref="ILoopsClientUtil" />
 public sealed class LoopsClientUtil : ILoopsClientUtil
 {
     private readonly AsyncSingleton<LoopsOpenApiClient> _client;
